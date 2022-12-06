@@ -7,6 +7,6 @@ const router = Router();
 
 //Member
 router.post("/logout", managerOptions.logout);
-router.post("/forgotPassword",passwordRevise.passwordForgot);
+router.post("/passwordRevise",passwordRevise.passwordForgot);
 
 export default { router }
