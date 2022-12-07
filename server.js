@@ -20,7 +20,7 @@ app.use("/admin", adminRouters.router);
 
 // logger.info('test info');
 logger.warn('server is running %s',{layer:"server"});
-// logger.error('test error %s',{layer:'Model'});
+
 
 app.listen(port, () => {
     console.log('server lunch');
