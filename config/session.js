@@ -1,6 +1,6 @@
 import session from 'express-session';
 import MySQLStore from 'express-mysql-session';
-import { con } from '../model/MySQL/conMySQL.js'
+import { con } from './conMySQL.js'
 
 const mysqlStore = new MySQLStore({clearExpired : true ,
 	// 清除過期會話的頻率；milliseconds: 
