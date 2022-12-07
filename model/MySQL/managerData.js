@@ -11,7 +11,7 @@ export default {
     //獲取登入資料
     getLoginData: async (account) => {
         // console.log("sql::",account);
-        const sql = '`SELECT * FROM manager.user_account WHERE account = ? UNION SELECT * FROM manager.manager_account WHERE account = ?`'
+        const sql = `SELECT * FROM manager.user_account WHERE account = ? `
         const [row, field] = await con.execute(sql,[account]);
         return row;
     },
@@ -43,18 +43,18 @@ export default {
         return name;
     },
     accountCreate:async(data)=>{
-        const sql = `INSERT INTO manager.user_account ( status, account, password, name, email, salt)  VALUES (?, ?, ?, ?, ?, ?)`;
-        const accountCreate = await sql.execute(sql, data);
+        const sql = `INSERT INTO manager.user_account ( status, account, password, name, email, salt , permission)  VALUES (?, ?, ?, ?, ?, ?, 1)`;
+        const accountCreate = await con.execute(sql, data);
         return accountCreate;
     },
     passwordUpdate:async(dataCreate)=>{
         const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE user_id = 1`;
-        const accountCreate = await sql.execute(sql, dataCreate);
+        const accountCreate = await con.execute(sql, dataCreate);
         return accountCreate;
     },
     randomPasswordUpdate:async(dataCreate)=>{
         const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE email = ?`;
-        const passwordCreate = await sql.execute(sql, dataCreate);
+        const passwordCreate = await con.execute(sql, dataCreate);
         return passwordCreate;
 
     }

@@ -128,7 +128,8 @@ async function accountCheck(data) {
 // 比對名稱是否重複
 async function nameCheck(data) {
     console.log('username:', data);
-    const nameCheck = sql.nameSelect(data);
+    const nameCheck = await sql.nameSelect(data);
+    console.log("nameCheck::",nameCheck);
     try {
         if (nameCheck) {
             return (false);
