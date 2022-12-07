@@ -4,7 +4,7 @@ import winston  from 'winston';
 import 'winston-daily-rotate-file';
 
 const customFormat = winston.format.printf(info => 
-	`${info.level.toUpperCase()}: ${info.tinfomestamp} message:${i.message}`
+	`${info.level.toUpperCase()}: ${info.tinfomestamp} message:${info.message}`
 );
 
 
