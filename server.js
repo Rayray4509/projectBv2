@@ -18,7 +18,7 @@ app.use("/api", apiRouters.router);
 app.use("/member", memberRouters.router);
 app.use("/admin", adminRouters.router);
 
-// logger.info('test info');
+
 logger.warn('server is running %s',{layer:"server"});
 
 
