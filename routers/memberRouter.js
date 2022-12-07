@@ -10,3 +10,4 @@ router.post("/logout", managerOptions.logout);
 router.post("/passwordRevise",passwordRevise.passwordRevise);
 
 export default { router }
+//衝突
