@@ -32,9 +32,9 @@ export default {
         return emailCheck;
 
     },
-    accountSelect:async(account)=>{
+    accountSelect:async(data)=>{
         const sql =  `SELECT account FROM manager.user_account WHERE account = ? UNION SELECT account FROM manager.manager_account WHERE account = ?`;
-        const [[account]] = await con.execute(sql, [account,account]);
+        const [[account]] = await con.execute(sql, [data,data]);
         return account;
     },
     nameSelect:async(data)=>{
