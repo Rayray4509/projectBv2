@@ -18,6 +18,7 @@ router.post("/renderImageArea",imageController.renderImageArea);
 //Article
 router.post("/addArticle",announcementController.addArticle);
 router.post("/editArticle",announcementController.editArticle);
+router.post("/delAnnouncement",announcementController.delAnnouncement);
 
 
 

@@ -31,13 +31,19 @@ const updateAnnouncementById = (title,content,id)=>{ //填入不是asyncFunc
     const sql = `UPDATE announcement SET title = ? ,content = ? WHERE id = ?; `
     return con.execute(sql,variable);
 }
+const changeAnnouncementStatusById = (status,id)=>{ 
+    const  variable = [status,id];
+    const sql = `UPDATE announcement SET status = ? WHERE id = ?; `
+    return con.execute(sql,variable);
+}
 
 export default{
     saveAnnouncement,
     getAnnouncementById,
     getAnnouncementByLimit,
     getNumOfAnnouncement,
-    updateAnnouncementById
+    updateAnnouncementById,
+    changeAnnouncementStatusById
 
 }
 
