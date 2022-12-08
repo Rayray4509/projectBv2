@@ -65,10 +65,28 @@ const getAnnouncement = async(req,res) =>{
     }
 }
 
+const delAnnouncement = async(req,res)=>{
+    try {
+
+        const {id} = req.body;
+        await announcement.changeAnnouncementStatusById(0,id);
+        return res.status(200).json({"message":"刪除成功"})
+        
+    } catch (error) {
+
+        console.log(error);
+        return res.status(406).json({"message":"err"});
+        
+    }
+   
+
+
+}
 
 
 export default{
     addArticle,
     editArticle,
-    getAnnouncement
+    getAnnouncement,
+    delAnnouncement
 }
