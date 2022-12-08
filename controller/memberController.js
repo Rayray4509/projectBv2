@@ -13,9 +13,6 @@ async function register(req, res) {
         // 比對資料庫有無重複帳號
         const accountCheck = await model.accountCheck(req.body.account);
         if (!accountCheck) return res.status(200).json({ "message": "帳號已被使用" });
-        // 比對資料庫有無重複暱稱
-        const nameCheck = await model.nameCheck(req.body.username);
-        if (!nameCheck) return res.status(200).json({ "message": "暱稱已被使用" });
         // 比對信箱及驗證碼是否正確
         const verifyDelete = model.verifyDelete(req.body.email, req.body.verify);
         if (!verifyDelete) return res.status(200).json({ "message": "驗證碼錯誤" });
