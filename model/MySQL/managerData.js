@@ -44,7 +44,7 @@ export default {
         return name;
     },
     accountCreate:async(data)=>{
-        const sql = `INSERT INTO manager.user_account ( status, permission, account, password, name, email, salt , permission)  VALUES (?, ?, ?, ?, ?, ?, 1)`;
+        const sql = `INSERT INTO manager.user_account ( status, permission, account, password, name, email, salt)  VALUES (?, ?, ?, ?, ?, ?, ?)`;
         const accountCreate = await con.execute(sql, data);
         return accountCreate;
     },
