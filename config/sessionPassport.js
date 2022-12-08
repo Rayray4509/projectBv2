@@ -40,11 +40,11 @@ const localStrategy = new Strategy(userInfo, authVerify);
 passport.use(localStrategy);
 
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.account);
 });
 
-passport.deserializeUser((id, done) => {
-    mysql.getUserData(id).then(res => {
+passport.deserializeUser((account, done) => {
+    mysql.getLoginData(account).then(res => {
         const [user, ] = res;
         done(null, user);
     })

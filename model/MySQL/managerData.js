@@ -5,14 +5,15 @@ import { con } from '../../config/conMySQL.js';
 export default {
     //管理者資料寫入資料庫
     writeManagerInfo: async (data) => {
-        const sql = 'INSERT INTO manager_account(account,password,name,salt) VALUES(?,?,?,?)'
+        const sql = 'INSERT INTO manager_account(account,password,name,salt,permission) VALUES(?,?,?,?,2)'
         await  con.execute(sql, data);
     },
     //獲取登入資料
     getLoginData: async (account) => {
         // console.log("sql::",account);
-        const sql = '`SELECT * FROM manager.user_account WHERE account = ? UNION SELECT * FROM manager.manager_account WHERE account = ?`'
-        const [row, field] = await con.execute(sql,[account]);
+        const sql = `SELECT * FROM manager.user_account WHERE account = ? UNION SELECT * FROM manager.manager_account WHERE account = ? `
+        const [row, field] = await con.execute(sql,[account,account]);
+        console.log("sql.getLoginData::",row);
         return row;
     },
     //設定管理者token
@@ -43,18 +44,18 @@ export default {
         return name;
     },
     accountCreate:async(data)=>{
-        const sql = `INSERT INTO manager.user_account ( status, account, password, name, email, salt)  VALUES (?, ?, ?, ?, ?, ?)`;
-        const accountCreate = await sql.execute(sql, data);
+        const sql = `INSERT INTO manager.user_account ( status, account, password, name, email, salt , permission)  VALUES (?, ?, ?, ?, ?, ?, 1)`;
+        const accountCreate = await con.execute(sql, data);
         return accountCreate;
     },
     passwordUpdate:async(dataCreate)=>{
         const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE user_id = 1`;
-        const accountCreate = await sql.execute(sql, dataCreate);
+        const accountCreate = await con.execute(sql, dataCreate);
         return accountCreate;
     },
     randomPasswordUpdate:async(dataCreate)=>{
         const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE email = ?`;
-        const passwordCreate = await sql.execute(sql, dataCreate);
+        const passwordCreate = await con.execute(sql, dataCreate);
         return passwordCreate;
 
     }

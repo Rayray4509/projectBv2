@@ -8,22 +8,16 @@ import { logger } from '../config/logger.js';
 
 export default  {
     async register(req,res){
-        console.log('in controller layer');
-        console.log("req::",req.body);
         //**參數未定**
         const {managerAccount,managerPassword,managerName} = req.body;
         const {passwordHash,salt} = crypto.passwordHash(managerPassword);
-        console.log(managerAccount);
-        console.log(managerName);
-        console.log(passwordHash);
-        console.log(salt);
+        const accountExist = sql.accountSelect(managerAccount);
+        if (accountExist.length !== 0) return res.status(200).json({result:false,msg:"帳號重複"});
         const data = [managerAccount,passwordHash,managerName,salt];
         await sql.writeManagerInfo(data);
-        res.status(200).json({result:true,mes:'wrote'});
+        res.status(200).json({result:true,msg:"wrote"});
     },
     login(req,res){
-        console.log(req.headers);
-        console.log(req.body);
         passport.authenticate('local', function (err, user) {
             console.log("passport::",req.body);
             if (err) { return res.status(200).json({ "message": err }) }
@@ -33,7 +27,7 @@ export default  {
                 console.log("login::",user);
                 if (err) { return res.status(200).json({ "message": err }) }
                 // Redirect if it succeeds
-                return res.status(200).json({message:'登入成功，1秒後跳轉',userData:{permission:2}});
+                return res.status(200).json({message:'登入成功，1秒後跳轉',userData:{permission:user.permission}});
             });
             logger.info(`${JSON.stringify(req.headers)} ${req.ip} %s`,{layer:"controller",act:"login"} )
         })(req,res);
