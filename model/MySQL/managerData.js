@@ -11,7 +11,9 @@ export default {
     //獲取登入資料
     getLoginData: async (account) => {
         // console.log("sql::",account);
-        const sql = `SELECT * FROM manager.user_account WHERE account = ? UNION SELECT * FROM manager.manager_account WHERE account = ? `
+        const sql = `SELECT * FROM manager.user_account WHERE account = ? 
+                     UNION  
+                     SELECT *,Null as level_id,Null as experience,Null as email FROM manager.manager_account WHERE account = ?`;
         const [row, field] = await con.execute(sql,[account,account]);
         console.log("sql.getLoginData::",row);
         return row;
@@ -36,6 +38,7 @@ export default {
     accountSelect:async(data)=>{
         const sql =  `SELECT account FROM manager.user_account WHERE account = ? UNION SELECT account FROM manager.manager_account WHERE account = ?`;
         const [[account]] = await con.execute(sql, [data,data]);
+        console.log(account);
         return account;
     },
     nameSelect:async(data)=>{
@@ -60,19 +63,4 @@ export default {
     }
     
 }
-
-
-
-
-// export async function writeManagerInfo(data){
-//     con.execute(sqlCommand.writeManager,[data]);
-// };
-// export async function getManagerData(id){
-//     const [row,field] = con.execute(sqlCommand.getManager,[id]);
-//     return row;
-// };
-
-// export async function setManagerToken({token,token_exptime,id}) {
-//     con.execute(sqlCommand.writeManagerToken,[token,token_exptime,id]);
-// }
 
