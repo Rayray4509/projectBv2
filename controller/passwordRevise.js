@@ -39,6 +39,8 @@ async function passwordForgot(req, res) {
             salt: ''
         }
         console.log(22,data);
+        const emailFormat = model.emailFormat(req.body.email);
+        if (!emailFormat) return res.status(200).json({ "message": "信箱格式錯誤" });
         const emailCheck = await model.emailCheck(data.forgotEmail);
         if (emailCheck) return res.status(200).json({ "message": "信箱不存在" });
 

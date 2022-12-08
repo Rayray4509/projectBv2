@@ -4,20 +4,19 @@ import {reTest} from "../lib/regularExpression.js"
 import sql from "./MySQL/managerData.js"
 
 // 1.發送驗證信
-// 比對信箱格式 OK
-// 生成隨機6位數驗證碼 - 暫存驗證碼 OK
-// 寄出驗證碼 OK
+// 比對信箱格式
+// 生成隨機6位數驗證碼 - 暫存驗證碼
+// 寄出驗證碼
 
 // 2.註冊
-// 比對帳號格式 OK
-// 比對密碼格式 OK
-// 比對名稱是否重複 OK
-// 比對會員信箱是否重複 OK
-// 比對帳號是否重複 OK
-// 比對驗證碼 成功後刪除驗證碼 OK
-// 密碼加密 OK
-// 寫入資料庫 OK
-// 註冊成功 OK
+// 比對帳號格式
+// 比對密碼格式
+// 比對會員信箱是否重複
+// 比對帳號是否重複
+// 比對驗證碼 成功後刪除驗證碼
+// 密碼加密
+// 寫入資料庫
+// 註冊成功
 
 // 資料格式
 // const data = {
@@ -41,9 +40,8 @@ function emailFormat(data) {
 async function emailCheck(data) {
     const emailCheck = await sql.emailSelect(data);
     try {
-        console.log('email:', emailCheck);
         if (emailCheck) {
-            console.log(11111111, emailCheck);
+            console.log('email:', emailCheck);
             return (false);
         } else {
             return (true);
@@ -64,7 +62,6 @@ async function verifySend(data) {
     console.log(verifyCode);
     const sendVerify = await mail.emailSend(data, randNum);
     try {
-        console.log(111, data);
         if (sendVerify) {
             console.log('verifyCode:', verifyCode);
             console.log("message:", "驗證碼已寄出");
@@ -109,29 +106,10 @@ function passwordFormat(data) {
 
 // 比對帳號是否重複
 async function accountCheck(data) {
-    console.log(11, data);
     const accountCheck = await sql.accountSelect(data)
     try {
         console.log('accountCheck:', accountCheck);
         if (accountCheck) {
-            return (false);
-        } else {
-            return (true);
-        };
-
-    } catch (err) {
-        console.log(err);
-        return (false, err);
-    }
-}
-
-// 比對名稱是否重複
-async function nameCheck(data) {
-    console.log('username:', data);
-    const nameCheck = await sql.nameSelect(data);
-    console.log("nameCheck::",nameCheck);
-    try {
-        if (nameCheck) {
             return (false);
         } else {
             return (true);
@@ -155,12 +133,11 @@ async function passwordGen(data) {
 
 // 註冊 (寫入資料庫)
 async function accountCreate(data) {
-    console.log(111111);
-    const status = '1';
-    const dataCreate = [status, data.account, data.password, data.username, data.email, data.salt];
-    console.log(11, dataCreate);
+    const status = 1;
+    const permission = 1;
+    const dataCreate = [status, permission, data.account, data.password, data.username, data.email, data.salt];
     if (dataCreate) {
-        console.log(22, dataCreate);
+        console.log('註冊資料', dataCreate);
         const accountCreate = await sql.accountCreate(dataCreate)
         try {
             if (accountCreate) {
@@ -178,9 +155,9 @@ async function accountCreate(data) {
 async function passwordUpdate(data) {
     const dataCreate = [data.newPassword, data.salt];
     if (dataCreate) {
-        const accountCreate = await sql.passwordUpdate(dataCreate);
+        const passwordCreate = await sql.passwordUpdate(dataCreate);
         try {
-            if (accountCreate) {
+            if (passwordCreate) {
                 console.log('寫入資料成功');
                 return true;
             }
@@ -231,7 +208,6 @@ export default {
     accountFormat,
     passwordFormat,
     accountCheck,
-    nameCheck,
     emailFormat,
     emailCheck,
     verifySend,
