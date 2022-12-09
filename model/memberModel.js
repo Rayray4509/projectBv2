@@ -91,16 +91,12 @@ function verifyDelete(email, verify) {
 
 // 比對帳號格式
 function accountFormat(data) {
-    console.log('account:', data);
-    const accountFormat = /^[0-9A-Za-z,!@#$%^&*()><?。+=]{6,20}$/;
-    if (accountFormat.test(data)) return true;
+    if (reTest.test("account",data)) return true;
 }
 
 // 比對密碼格式
 function passwordFormat(data) {
-    console.log('password:', data);
-    const passwordFormat = /^[0-9A-Za-z]{6,20}$/;
-    if (passwordFormat.test(data)) return true;
+    if (reTest.test("password",data)) return true;
 }
 
 // 比對帳號是否重複
