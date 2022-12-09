@@ -89,7 +89,6 @@ function verifyDelete(email, verify) {
     }
 }
 
-
 // 比對帳號格式
 function accountFormat(data) {
     console.log('account:', data);
@@ -151,11 +150,28 @@ async function accountCreate(data) {
     }
 }
 
-// 密碼修改
-async function passwordUpdate(data) {
-    const dataCreate = [data.newPassword, data.salt];
+// 管理員密碼修改
+async function managerPasswordUpdate(data,user) {
+    const dataCreate = [data.newPassword, data.salt ,user.account];
     if (dataCreate) {
-        const passwordCreate = await sql.passwordUpdate(dataCreate);
+        const passwordCreate = await sql.managerPasswordUpdate(dataCreate);
+        try {
+            if (passwordCreate) {
+                console.log('寫入資料成功');
+                return true;
+            }
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    }
+}
+
+// 會員密碼修改
+async function userPasswordUpdate(data,user) {
+    const dataCreate = [data.newPassword, data.salt ,user.account];
+    if (dataCreate) {
+        const passwordCreate = await sql.userPasswordUpdate(dataCreate);
         try {
             if (passwordCreate) {
                 console.log('寫入資料成功');
@@ -176,7 +192,7 @@ async function passwordUpdate(data) {
 async function randomPasswordUpdate(data){
     const dataCreate = [data.password, data.salt, data.forgotEmail];
     if (dataCreate) {
-        const passwordCreate = await sql.randomPasswordUpdate(dataCreate)
+        const passwordCreate = await sql.randomPasswordUpdate(dataCreate);
         try {
             if (passwordCreate) {
                 console.log('寫入資料成功');
@@ -214,7 +230,8 @@ export default {
     verifyDelete,
     passwordGen,
     accountCreate,
-    passwordUpdate,
+    userPasswordUpdate,
+    managerPasswordUpdate,
     passwordSend,
     randomPasswordUpdate
 }

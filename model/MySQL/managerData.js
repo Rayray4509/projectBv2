@@ -29,38 +29,43 @@ export default {
         const [row, field] = await con.execute(sql, [id]);
         return row;
     },
+    //搜尋所有會員email
     emailSelect:async(email)=>{
         const sql =  `SELECT email FROM  manager.user_account WHERE email = ?`;
         const [[emailCheck]] = await con.execute(sql, [email]);
         return emailCheck;
-
     },
+    //搜尋管理員及會員帳號
     accountSelect:async(data)=>{
         const sql =  `SELECT account FROM manager.user_account WHERE account = ? UNION SELECT account FROM manager.manager_account WHERE account = ?`;
         const [[account]] = await con.execute(sql, [data,data]);
         console.log(account);
         return account;
     },
-    nameSelect:async(data)=>{
-        const sql = `SELECT name FROM manager.user_account WHERE name = ? UNION SELECT name FROM manager.manager_account WHERE name = ?;`;
-        const [[name]] = await con.execute(sql,[data, data]);
-        return name;
-    },
+    //會員資料寫進會員資料庫
     accountCreate:async(data)=>{
         const sql = `INSERT INTO manager.user_account ( status, permission, account, password, name, email, salt)  VALUES (?, ?, ?, ?, ?, ?, ?)`;
         const accountCreate = await con.execute(sql, data);
         return accountCreate;
     },
-    passwordUpdate:async(dataCreate)=>{
-        const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE user_id = 1`;
-        const accountCreate = await con.execute(sql, dataCreate);
-        return accountCreate;
+    //會員修改密碼
+    userPasswordUpdate:async(userPassword)=>{
+        const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE account = ?`;
+        const userPasswordUpdate = await con.execute(sql, userPassword);
+        return userPasswordUpdate;
     },
-    randomPasswordUpdate:async(dataCreate)=>{
-        const sql = `UPDATE manager.user_account SET password = ?, salt = ? WHERE email = ?`;
-        const passwordCreate = await con.execute(sql, dataCreate);
-        return passwordCreate;
-    }
-    
+    //管理員修改密碼
+    managerPasswordUpdate:async(managerPassword)=>{
+        const sql = `UPDATE manager.manager_account SET password = ?, salt = ? WHERE account = ?`;
+        const managerPasswordUpdate = await con.execute(sql, managerPassword);
+        return managerPasswordUpdate;
+    },
+    //忘記密碼 更新隨機密碼寫入資料庫
+    randomPasswordUpdate:async(data)=>{
+        const sql =  `UPDATE manager.user_account SET password = ?, salt = ? WHERE email = ? `;
+        const account = await con.execute(sql, data);
+        console.log(account);
+        return account;
+    },
 }
 
