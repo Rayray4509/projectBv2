@@ -4,25 +4,25 @@ const saveAnnouncement =  (title,content) => {
    
     const  variable = [title,content];
     let spl = `
-        INSERT INTO announcement(title,content)VALUES(?,?)`;
+    INSERT INTO announcement(title,content,status)VALUES(?,?,1)`;
     return con.execute(spl,variable);
 }
 
-const getNumOfAnnouncement = async()=>{  //目前沒有刪除功能暫不考慮最大值
-    const sql = `SELECT COUNT(id) FROM announcement ;`
+const getNumOfAnnouncement = async()=>{  
+    const sql = `SELECT COUNT(id) FROM announcement  WHERE status = 1;`
     const [[ { 'COUNT(id)': count } ],_] = await con.execute(sql);
     return count;
 }
 
 const getAnnouncementByLimit = async(init,num)=>{
-    let sql = `SELECT * FROM announcement  ORDER BY id DESC LIMIT ${init},${num};`
+    let sql = `SELECT * FROM announcement WHERE status = 1 ORDER BY id DESC LIMIT ${init},${num};`
     const [AnnouncementArray] = await con.execute(sql);
     return AnnouncementArray;
 }
 
 const getAnnouncementById = async(id)=>{ //預留透過ID取得內容
     const  variable = [id];
-    let sql = `SELECT id FROM announcement WHERE id = ?`
+    let sql = `SELECT id FROM announcement WHERE id = ? AND status = 1`
     const [announcement] = await con.execute(sql,variable);
     return announcement;
 }
