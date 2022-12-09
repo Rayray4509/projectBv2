@@ -1,9 +1,12 @@
+// import { log } from 'winston';
 import model from '../model/memberModel.js'
 
 // 修改密碼
 // 比對密碼格式 加密 寫入密碼
 async function passwordRevise(req, res) {
     try {
+        console.log('req::',req);
+        console.log(req.user);
         console.log('password:', req.body);
         const passwordFormat = model.passwordFormat(req.body.newPassword);
         if (!passwordFormat) return res.status(200).json({ "message": "密碼格式錯誤" });
