@@ -6,7 +6,7 @@ const adminAuth = (req,res,next)=>{
 
 const memberAuth = (req,res,next)=>{
 
-    if(req.isAuthenticated()&& req.user.permission == 1) return next();
+    if(req.isAuthenticated()) return next();
     return res.status(405).json({"message":"youCantDoThat"})
 }
 
