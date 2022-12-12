@@ -39,7 +39,6 @@ export default  {
                 console.log("t1::",t1);
                 console.log("t2::",t2);
                 console.log("execute times ::", t2 - t1);
-                console.log("reqHeaders::",req.headers);
                 logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200}, user::${user.account} timeTaken::${Math.round(t2-t1)} %s`,{layer:"controller",act:'login'} );
             })(req,res); 
         } catch (error) {
@@ -72,3 +71,6 @@ export default  {
 
     
 // }
+
+
+logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200}, user::${user.account}  %s`,{layer:"controller",act:'login'} );
