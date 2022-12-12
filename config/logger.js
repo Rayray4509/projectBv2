@@ -3,35 +3,32 @@ import winston  from 'winston';
 
 import 'winston-daily-rotate-file';
 
+//自定義紀錄格式
 const customFormat = winston.format.printf(info => 
-	`${info.level.toUpperCase()}: ${info.tinfomestamp} message:${info.message}`
+	`${info.level.toUpperCase()}: ${info.timestamp} message:${info.message}`
 );
 
 
 let exceptionHandlers = [
 	new winston.transports.DailyRotateFile({
-		name: 'Error Logs',
+		name: 'exceptionError Logs',
 		filename: 'logs/errLogs/exceptions-%DATE%.log',
 		datePattern: 'YYYY-MM-DD',
 		zippedArchive: true,
 		maxSize: '128m',
 		maxFiles: '14d'
 	})
-]
+];
 
-const infoAndWarnFilter = winston.format((info) => { 
-	return info.level === 'info' || info.level === 'warn' ? info : false;
-})
+//非setting層級返回false，不予紀錄
+const infoAndWarnFilter = winston.format((info) => info.level === 'info' || info.level === 'warn' ? info : false);
 
-const errorFilter = winston.format((info) => { 
-	return info.level === 'error' ? info : false ;
-})
-// const warnFilter = winston.format((info, opts) => { 
-// 	return info.level === 'warn' ? info : false 
-// })
+const errorFilter = winston.format((info) => info.level === 'error' ? info : false);
 
 
+//多個層級的日誌輪換
 let transports = [
+	
 	new winston.transports.DailyRotateFile({
 		name: 'Error Logs',
 		filename: 'logs/errLogs/error-%DATE%.log',
@@ -42,7 +39,6 @@ let transports = [
 		level: 'error',
 		json: true,
 		colorize: false,
-		
 		format: winston.format.combine(
 			errorFilter(),
 			winston.format.timestamp(),
@@ -81,21 +77,18 @@ let transports = [
 			winston.format.splat()
 		)
 	})
-]
+];
 
+//創建紀錄器
 const logger = winston.createLogger({
 	transports: transports,
 	exceptionHandlers: exceptionHandlers,
 	level: winston.config.npm.levels  ? 'debug' : 'info',
 	exitOnError: false,
-	// defaultMeta:true,
-	// Default format
 	format: winston.format.combine(
-		winston.format.timestamp({format:'MM-DD-YYYY HH:mm:ss'}),
-        // winston.format.simple(),
-		// winston.format.splat(),
+		winston.format.timestamp({format:'YYYY-MM-DD HH:mm:ss'}),
 		customFormat
 	)
-})
+});
 
 export {logger};
