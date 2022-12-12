@@ -6,14 +6,25 @@ import { reTest } from '../lib/regularExpression.js';
 
 export default  {
     async register(req,res){
-        const {account,password,name} = req.body;
-        if((!reTest.test("account",account)) || (!reTest.test("password",password))) return res.status(200).json({result:false,msg:"格式錯誤"});
-        const {passwordHash,salt} = crypto.passwordHash(managerPassword);
-        const accountExist = sql.accountSelect(managerAccount);
-        if (accountExist.length !== 0) return res.status(200).json({result:false,msg:"帳號重複"});
-        const data = [account,passwordHash,name,salt];
-        await sql.writeManagerInfo(data);
-        res.status(200).json({result:true,msg:"wrote"});
+        try {
+
+            const {account,password,name} = req.body;
+            if((!reTest("account",account)) || (!reTest("password",password))) return res.status(200).json({result:false,msg:"格式錯誤"});
+            const {passwordHash,salt} = crypto.passwordHash(password);
+            const accountExist = await sql.accountSelect(account);
+            if (accountExist) return res.status(200).json({result:false,msg:"帳號重複"});
+            const data = [account,passwordHash,name,salt];
+            await sql.writeManagerInfo(data);
+            res.status(200).json({result:true,msg:"wrote"});
+
+            
+        } catch (error) {
+
+            console.log(error);
+            return res.status(406).json({"message":"err"});
+            
+        }
+
     },
     login(req,res){
         try {
@@ -43,6 +54,8 @@ export default  {
             })(req,res); 
         } catch (error) {
                 logger.error(error);
+                console.log(error);
+                return res.status(406).json({"message":"err"});
         }
         
     },
@@ -73,4 +86,3 @@ export default  {
 // }
 
 
-logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200}, user::${user.account}  %s`,{layer:"controller",act:'login'} );

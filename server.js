@@ -17,7 +17,7 @@ app.use(passport.session());
 
 app.use("/api", apiRouters.router);
 app.use("/member",auth.memberAuth, memberRouters.router);
-app.use("/admin", auth.adminAuth,adminRouters.router);
+app.use("/admin",adminRouters.router);
 
 
 logger.warn('server is running %s',{layer:"server"});
