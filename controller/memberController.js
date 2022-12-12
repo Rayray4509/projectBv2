@@ -35,7 +35,7 @@ async function register(req, res) {
         }
     } catch (err) {
         console.log('錯誤:',err);
-        res.json(false, err)
+        return res.status(406).json({"message":"err"});
     }
 };
 
@@ -51,7 +51,7 @@ async function sendEmail(req, res) {
         if (sendVerify) return res.json({ "message": "驗證碼已寄出" });
     } catch (err) {
         console.log(err);
-        res.json(response(false, err))
+        return res.status(406).json({"message":"err"});
     }
 };
 

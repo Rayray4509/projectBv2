@@ -28,7 +28,7 @@ async function passwordRevise(req, res) {
         }
     } catch (err) {
         console.log(err);
-        res.json(response(false, err))
+        return res.status(406).json({"message":"err"});
     }
 };
 
@@ -66,7 +66,7 @@ async function passwordForgot(req, res) {
         };
     } catch (err) {
         console.log(err);
-        res.json(response(false, err))
+        return res.status(406).json({"message":"err"});
     }
 }
 

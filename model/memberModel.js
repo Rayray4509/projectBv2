@@ -91,12 +91,12 @@ function verifyDelete(email, verify) {
 
 // 比對帳號格式
 function accountFormat(data) {
-    if (reTest.test("account",data)) return true;
+    if (reTest("account",data)) return true;
 }
 
 // 比對密碼格式
 function passwordFormat(data) {
-    if (reTest.test("password",data)) return true;
+    if (reTest("password",data)) return true;
 }
 
 // 比對帳號是否重複
