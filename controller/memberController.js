@@ -1,9 +1,12 @@
 import model from '../model/memberModel.js';
-import {logger} from "../config/logger.js";
+import { logger } from "../config/logger.js";
 //註冊
 async function register(req, res) {
     console.log("data:", req.body);
     try {
+        // 比對姓名格式
+        const nameCheckResult = model.nameFormat(req.body.userName)
+        if (!nameCheckResult) return res.status(200).json({ "message": "姓名格式錯誤" });
         // 比對帳號格式
         const accountCheckResult = model.accountFormat(req.body.account)
         if (!accountCheckResult) return res.status(200).json({ "message": "帳號格式錯誤" });
@@ -21,23 +24,23 @@ async function register(req, res) {
         if (passwordGen) {
             req.body.salt = passwordGen.salt;
             req.body.password = passwordGen.password;
-            console.log('加密後:',req.body);
+            console.log('加密後:', req.body);
         } else {
             return res.status(200).json({ "message": "加密錯誤" });
         }
         // 寫入帳號 成功後回傳訊息
         const accountCreate = await model.accountCreate(req.body);
-        if(accountCreate){
-            console.log('帳號創建成功',accountCreate);
-            logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200} %s`,{layer:"controller",act:'createAccount'} );
-            res.json({"message":"註冊成功"})
-        }else{
+        if (accountCreate) {
+            console.log('帳號創建成功', accountCreate);
+            logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200} %s`, { layer: "controller", act: 'createAccount' });
+            res.json({ "message": "註冊成功" })
+        } else {
             return res.status(200).json({ "message": "帳號創建錯誤" });
         }
     } catch (err) {
-        console.log('錯誤:',err);
-        logger.error(`${err}  %s`,{layer:"controller",act:'createAccount'});
-        return res.status(406).json({"message":"err"});
+        console.log('錯誤:', err);
+        logger.error(`${err}  %s`, { layer: "controller", act: 'createAccount' });
+        return res.status(406).json({ "message": "err" });
     }
 };
 
@@ -53,7 +56,7 @@ async function sendEmail(req, res) {
         if (sendVerify) return res.json({ "message": "驗證碼已寄出" });
     } catch (err) {
         console.log(err);
-        return res.status(406).json({"message":"err"});
+        return res.status(406).json({ "message": "err" });
     }
 };
 

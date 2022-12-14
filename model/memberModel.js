@@ -11,6 +11,7 @@ import sql from "./MySQL/managerData.js"
 // 2.註冊
 // 比對帳號格式
 // 比對密碼格式
+// 比對姓名格式
 // 比對會員信箱是否重複
 // 比對帳號是否重複
 // 比對驗證碼 成功後刪除驗證碼
@@ -97,6 +98,11 @@ function accountFormat(data) {
 // 比對密碼格式
 function passwordFormat(data) {
     if (reTest("password",data)) return true;
+}
+
+// 比對姓名格式
+function nameFormat(data) {
+    if (reTest("userName",data)) return true;
 }
 
 // 比對帳號是否重複
@@ -219,6 +225,7 @@ async function passwordSend(data,randNum) {
 export default {
     accountFormat,
     passwordFormat,
+    nameFormat,
     accountCheck,
     emailFormat,
     emailCheck,
