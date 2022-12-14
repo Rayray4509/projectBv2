@@ -5,7 +5,7 @@ async function register(req, res) {
     console.log("data:", req.body);
     try {
         // 比對姓名格式
-        const nameCheckResult = model.nameFormat(req.body.userName)
+        const nameCheckResult = model.nameFormat(req.body.username)
         if (!nameCheckResult) return res.status(200).json({ "message": "姓名格式錯誤" });
         // 比對帳號格式
         const accountCheckResult = model.accountFormat(req.body.account)
