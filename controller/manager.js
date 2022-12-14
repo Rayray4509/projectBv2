@@ -53,7 +53,7 @@ export default  {
                 logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200}, user::${user.account} timeTaken::${Math.round(t2-t1)} %s`,{layer:"controller",act:'login'} );
             })(req,res); 
         } catch (error) {
-                logger.error(error);
+                logger.error(`${error}  %s`,{layer:"controller",act:'login'});
                 console.log(error);
                 return res.status(406).json({"message":"err"});
         }
