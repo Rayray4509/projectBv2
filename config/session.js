@@ -6,7 +6,7 @@ const mysqlStore = new MySQLStore({clearExpired : true ,
 	// 清除過期會話的頻率；milliseconds: 
 	checkExpirationInterval : 1000*30 , 
 	// 有效會話的最大年齡；milliseconds: 
-	expiration : 1000*60 ,}, con);
+	expiration : 1000 * 60 * 60 * 12,}, con);
 
 const sessionSetting = () => {
     return session({
@@ -15,7 +15,7 @@ const sessionSetting = () => {
         resave: false,
         saveUninitialized: true,
         cookie: {
-            maxAge: 1000 * 60 *5
+            maxAge: 1000 * 60 * 60 * 12
             // secure: true 
         },
         
