@@ -6,6 +6,7 @@ const addArticle = async(req,res)=>{
     try {
 
         const {title,content} = req.body;
+        //確認內容存在與否
         if(title === undefined || content === undefined ) return res.status(200).json({"message":"cannot be blank"});
         await announcement.saveAnnouncement(title,content);
         return res.status(201).json({"message":"OK"});
@@ -35,8 +36,8 @@ const getAnnouncement = async(req,res) =>{
 
         const init = req.body.num;
         const count = await announcement.getNumOfAnnouncement();
-        const dif = count-init
-
+        const dif = count-init//計算資料剩餘量
+        //下列為三種判斷分別為資料量大於等於5小於5大於0與小於0所應對方式
         if(dif>=5){
             const announcementArray = await announcement.getAnnouncementByLimit(init,5);
             for(let item of announcementArray){

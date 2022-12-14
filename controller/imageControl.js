@@ -76,7 +76,8 @@ const renderImageArea = async (req, res) => {
 
     const init = req.body.num;
     const count = await image.getNumOfImageArea();
-    const dif = count - init;
+    const dif = count - init;//計算圖片剩餘量
+    //下列為三種判斷分別為資料量大於等於12小於12大於0與小於0所應對方式
     if (dif >= 12) {
       const imageArray = [];
       const idArray = await image.getImageAreaId(init, 12);
