@@ -27,8 +27,9 @@ const changeStateOfIsImageArea = (isImageArea,id)=>{
 }
 
 const getImageAreaId = async(init,num)=>{
-    let sql = `SELECT id FROM image_area WHERE is_image_area = 1 ORDER BY id DESC LIMIT ${init},${num};` 
-    const [idArray] = await con.execute(sql);
+    const  variable = [init,num].map(el => el.toString());//數字轉換為字串
+    let sql = `SELECT id FROM image_area WHERE is_image_area = 1 ORDER BY id DESC LIMIT ?,?;` 
+    const [idArray] = await con.execute(sql,variable);
     return idArray;
     
 }

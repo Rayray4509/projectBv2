@@ -15,8 +15,9 @@ const getNumOfAnnouncement = async()=>{
 }
 
 const getAnnouncementByLimit = async(init,num)=>{
-    let sql = `SELECT * FROM announcement WHERE status = 1 ORDER BY id DESC LIMIT ${init},${num};`
-    const [AnnouncementArray] = await con.execute(sql);
+    const  variable = [init,num].map(el => el.toString());//數字轉換為字串
+    let sql = `SELECT * FROM announcement WHERE status = 1 ORDER BY id DESC LIMIT ?, ?`
+    const [AnnouncementArray] = await con.execute(sql,variable);
     return AnnouncementArray;
 }
 
