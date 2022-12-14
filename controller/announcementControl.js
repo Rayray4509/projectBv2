@@ -1,5 +1,6 @@
 import announcement from "../model/MySQL/announcement.js";
 import { htmlGetImgReplace } from "../lib/regularExpression.js";
+import {logger} from "../config/logger.js";
 
 const addArticle = async(req,res)=>{
     try {
@@ -44,6 +45,7 @@ const getAnnouncement = async(req,res) =>{
                 item.content = str
                 item.preview = result; //新增預覽物件
             }
+            logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200} %s`,{layer:"controller",act:'getAnnouncement'});
             return res.status(200).json({"announcement":announcementArray});
         }
         if(dif<0) return res.status(200).json({"announcement":[]});
@@ -55,10 +57,11 @@ const getAnnouncement = async(req,res) =>{
             item.content = str
             item.preview = result; //新增預覽物件
         }
+        logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200} %s %s`,{layer:"controller",act:'getAnnouncement'},{status:'First-time Request'});
         return res.status(200).json({"announcement":announcementArray})
         
     } catch (error) {
-
+        logger.error(`${error}  %s`,{layer:"controller",act:'getAnnouncement'});
         console.log(error);
         return res.status(406).json({"message":"err"});
         
