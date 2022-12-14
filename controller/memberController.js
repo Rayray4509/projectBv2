@@ -29,7 +29,7 @@ async function register(req, res) {
         const accountCreate = await model.accountCreate(req.body);
         if(accountCreate){
             console.log('帳號創建成功',accountCreate);
-            logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200}, user::${user.account} timeTaken::${Math.round(t2-t1)} %s`,{layer:"controller",act:'createAccount'} );
+            logger.info(`frontEnd_serverIP::${req.headers.origin} , clientIP::${req.headers["x-forwarded-for"]} , res_statusCode:${200} %s`,{layer:"controller",act:'createAccount'} );
             res.json({"message":"註冊成功"})
         }else{
             return res.status(200).json({ "message": "帳號創建錯誤" });
