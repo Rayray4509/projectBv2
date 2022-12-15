@@ -1,6 +1,6 @@
 import mail from "./mail.js";
 import crypto from "crypto";
-import {reTest} from "../lib/regularExpression.js"
+import { reTest } from "../lib/regularExpression.js"
 import sql from "./MySQL/managerData.js"
 
 // 1.發送驗證信
@@ -33,21 +33,20 @@ let verifyCode = {};
 
 // 比對信箱格式
 function emailFormat(data) {
-    const result = reTest("email",data)
+    const result = reTest("email", data)
     return result;
 }
 
 // 比對會員信箱是否重複
 async function emailCheck(data) {
-    const emailCheck = await sql.emailSelect(data);
     try {
+        const emailCheck = await sql.emailSelect(data);
         if (emailCheck) {
             console.log('email:', emailCheck);
             return (false);
         } else {
             return (true);
         };
-
     } catch (err) {
         console.log(err);
         return (false, err);
@@ -61,8 +60,8 @@ async function verifySend(data) {
 
     verifyCode[data] = randNum;
     console.log(verifyCode);
-    const sendVerify = await mail.emailSend(data, randNum);
     try {
+        const sendVerify = await mail.emailSend(data, randNum);
         if (sendVerify) {
             console.log('verifyCode:', verifyCode);
             console.log("message:", "驗證碼已寄出");
@@ -92,30 +91,29 @@ function verifyDelete(email, verify) {
 
 // 比對帳號格式
 function accountFormat(data) {
-    if (reTest("account",data)) return true;
+    if (reTest("account", data)) return true;
 }
 
 // 比對密碼格式
 function passwordFormat(data) {
-    if (reTest("password",data)) return true;
+    if (reTest("password", data)) return true;
 }
 
 // 比對姓名格式
 function nameFormat(data) {
-    if (reTest("userName",data)) return true;
+    if (reTest("userName", data)) return true;
 }
 
 // 比對帳號是否重複
 async function accountCheck(data) {
-    const accountCheck = await sql.accountSelect(data)
     try {
+        const accountCheck = await sql.accountSelect(data)
         console.log('accountCheck:', accountCheck);
         if (accountCheck) {
             return (false);
         } else {
             return (true);
         };
-
     } catch (err) {
         console.log(err);
         return (false, err);
@@ -137,52 +135,52 @@ async function accountCreate(data) {
     const status = 1;
     const permission = 1;
     const dataCreate = [status, permission, data.account, data.password, data.username, data.email, data.salt];
-    if (dataCreate) {
-        console.log('註冊資料', dataCreate);
-        const accountCreate = await sql.accountCreate(dataCreate)
-        try {
+    try {
+        if (dataCreate) {
+            console.log('註冊資料', dataCreate);
+            const accountCreate = await sql.accountCreate(dataCreate)
             if (accountCreate) {
                 console.log('寫入資料成功');
                 return true;
             }
-        } catch (err) {
-            console.log(err);
-            return false;
         }
+    } catch (err) {
+        console.log(err);
+        return false;
     }
 }
 
 // 管理員密碼修改
-async function managerPasswordUpdate(data,user) {
-    const dataCreate = [data.newPassword, data.salt ,user.account];
-    if (dataCreate) {
-        const passwordCreate = await sql.managerPasswordUpdate(dataCreate);
-        try {
+async function managerPasswordUpdate(data, user) {
+    const dataCreate = [data.newPassword, data.salt, user.account];
+    try {
+        if (dataCreate) {
+            const passwordCreate = await sql.managerPasswordUpdate(dataCreate);
             if (passwordCreate) {
                 console.log('寫入資料成功');
                 return true;
             }
-        } catch (err) {
-            console.log(err);
-            return false;
         }
+    } catch (err) {
+        console.log(err);
+        return false;
     }
 }
 
 // 會員密碼修改
-async function userPasswordUpdate(data,user) {
-    const dataCreate = [data.newPassword, data.salt ,user.account];
-    if (dataCreate) {
-        const passwordCreate = await sql.userPasswordUpdate(dataCreate);
-        try {
+async function userPasswordUpdate(data, user) {
+    const dataCreate = [data.newPassword, data.salt, user.account];
+    try {
+        if (dataCreate) {
+            const passwordCreate = await sql.userPasswordUpdate(dataCreate);
             if (passwordCreate) {
                 console.log('寫入資料成功');
                 return true;
             }
-        } catch (err) {
-            console.log(err);
-            return false;
         }
+    } catch (err) {
+        console.log(err);
+        return false;
     }
 }
 
@@ -191,30 +189,30 @@ async function userPasswordUpdate(data,user) {
 // 寄出密碼
 
 // 隨機生成密碼 寫入資料庫
-async function randomPasswordUpdate(data){
+async function randomPasswordUpdate(data) {
     const dataCreate = [data.password, data.salt, data.forgotEmail];
-    if (dataCreate) {
-        const passwordCreate = await sql.randomPasswordUpdate(dataCreate);
-        try {
+    try {
+        if (dataCreate) {
+            const passwordCreate = await sql.randomPasswordUpdate(dataCreate);
             if (passwordCreate) {
                 console.log('寫入資料成功');
                 return true;
             }
-        } catch (err) {
-            console.log(err);
-            return false;
         }
+    } catch (err) {
+        console.log(err);
+        return false;
     }
 }
 
 // 寄出密碼
-async function passwordSend(data,randNum) {
-    console.log(44,randNum);
-    const dataSend = await mail.emailSendPassword(data, randNum);
+async function passwordSend(data, randNum) {
+    console.log(44, randNum);
     if (dataSend) {
+        const dataSend = await mail.emailSendPassword(data, randNum);
         console.log('dataSend:', dataSend);
         console.log("message:", "密碼已寄出");
-        return (true,randNum);
+        return (true, randNum);
     } else {
         console.log(false, "請重新寄送email");
         return false;
