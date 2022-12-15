@@ -1,17 +1,30 @@
 import nodemailer from "nodemailer";
 import { OAuth2Client } from "google-auth-library";
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
-const CLIENT_ID = '756484568220-48ai6cq0bdqoun948eq6kh6q5t91fruq.apps.googleusercontent.com';
-const CLEINT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//04q0kdb6KecTmCgYIARAAGAQSNwF-L9IrhnDlFowWu0v3OqWteErR-nGtWtxhgXgUemI3TGn0ru8B3Nr4sZv1qmCIIS4QD4a_TLQ'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const envFile = path.join(__dirname, '../../.env');
+dotenv.config({ path: envFile });
+
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLEINT_SECRET = process.env.CLEINT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+
+console.log(CLIENT_ID);
+console.log(CLEINT_SECRET);
+console.log(REDIRECT_URI);
+console.log(REFRESH_TOKEN);
 
 const oAuth2Client = new OAuth2Client(
     CLIENT_ID,
     CLEINT_SECRET,
     REDIRECT_URI
 );
-oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+oAuth2Client.setCredentials({ refresh_token:REFRESH_TOKEN });
 
 async function emailSend(email, vCode) {
     try {
